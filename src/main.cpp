@@ -1,7 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <string>
+#include <cstring>
+#include <cstdlib>
 using namespace std;
 
 string input;
@@ -31,55 +32,49 @@ int main(int argc, char **argv)
     vector<string> arr;
  
     readFromFile(arr, fi, input);
-
     n = arr.size(); 
-    cout<<"n is "<<n<<endl;
     
     char S[n][k];
-    memset(S, ' ', sizeof(S));
+    S[0][0] = ' ';
   
 
     getString(S, arr);
  
-/*    cout<<"\nThe array is \n";
+/*   cout<<"\nThe array is \n";
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < k; j++) {
-	    cout<<S[i][j]<<" ";
-	}
-	cout<<endl;
-    }
-*/
-    lsdRadixSort(S);
-
-    /*cout<<"\nThe array is \n";
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < k; j++) {
-	    cout<<S[i][j]<<" ";
+	    cout<<S[i][j];
 	}
 	cout<<endl;
     }*/
 
-    printToFile(S, fo, output);
-    fi.close(); 
-    fo.close(); 
+    lsdRadixSort(S);
+ 
+   cout<<"\nThe array is \n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < k; j++) {
+	    cout<<S[i][j];
+	}
+	cout<<endl;
+    }
 
+ 
+    //printToFile(S, fo, output);
+  //fo.close(); 
+    fi.close(); 
+  
     return 0;
 }
 
 void readFromFile(vector<string>& arr, fstream& fp, string filename)
-{
+{ 
+
     string names = "";
     string values; 
     char ch;
 
-    fp.open(filename, ios::in | ios::binary);
+    fp.open(filename.c_str(), ios::in | ios::binary);
 
-    /*if(fp.is_open()){
-        while (fp >> names) {
-            arr.push_back(names);
-            fp.get();
-        }
-    }*/
  
     if (fp.is_open()) {    
         while (getline(fp, names)){
@@ -94,24 +89,47 @@ void readFromFile(vector<string>& arr, fstream& fp, string filename)
 }
 
 
-void printToFile(char S[][k], fstream& fp, string filename)
+void printToFile(char S[][k], fstream& fo, string filename)
 {
-    fp.open(filename, ios::out | ios::binary);
-    if (fp.is_open()) {
-        for (int i = 0; i < n; i++) {
-	    for (int j = 0; j < k; j++) 
-	        fp<<S[i][j];
-             fp<<endl;
-        }
+    fo.open(filename.c_str(), ios::out | ios::binary);
+    if (!fo) {
+        cout<<"Error opening the file\n";
+	exit(-1);
     }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < k; j++) {
+	    cout<<S[i][j];
+	    fo <<S[i][j];
+	}
+	cout<<endl;
+	fo<<endl;
+    }
+ 
 }
 
 void getString(char S[][k], vector<string> arr) 
 {
 
     for (int i = 0; i < n; i++) {
-        string temp = arr[i].substr(0, k); 
-        strcpy(S[i], temp.c_str());
+        //string temp = arr[i].substr(0, k); 
+	int l = arr[i].size();
+	for (int j = 0; j < l; j++) {
+	    if (j < k) {
+	        S[i][j] = arr[i].at(j); 
+		//cout<<S[i][j]<<" " ;
+	      }
+	}
+	if (l < k) {
+	    for (int j = l ; j < k ; j++) {
+	        S[i][j] = '\0';
+	    }
+	}
+	//cout<<endl;
+	//cout<<temp<<endl;
+	//for (int j = 0; j < temp.size(); j++) {
+        //strcpy(S[i], temp.c_str());
+	    //S[i][j] = temp[j];
+	//}
     }
 
 
@@ -138,7 +156,7 @@ void countingSort(char S[][k], int j)
     //char temp[n];
 
     char temp[n][k];
-    memset(temp, ' ', sizeof(temp));
+    temp[0][0] = ' ';
 
 
     for (int i = 0; i < n; i++) {
@@ -148,8 +166,8 @@ void countingSort(char S[][k], int j)
 	
     }
 
-    for (int k = 1; k < 256; k++) {
-        count[k] += count[k - 1];
+    for (int p = 1; p < 256; p++) {
+        count[p] += count[p - 1];
     }
  
     for (int i = 0; i < n; i++) {
@@ -159,8 +177,10 @@ void countingSort(char S[][k], int j)
     }
 
     for (int i = 0; i < n; i++) {
-        //S[i][j] = temp[i];
+        //S[i][j] = temp[i]; 
+	//cout<<temp[i]<<endl;
 	strcpy(S[i], temp[i]);
+        //cout<<S[i]<<endl;
     }
 
    /* for (int i = 0; i < 256; i++) {
