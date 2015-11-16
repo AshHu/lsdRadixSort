@@ -24,6 +24,10 @@ int main(int argc, char **argv)
         cout<<"Error. Less arguments. Please see README for instructions\n";
         exit(-1);
     }
+
+    clock_t time_start, time_stop;
+    time_start = clock();
+
     string prefix = "ins/"; 
     input = prefix + string(argv[1]);
 
@@ -63,6 +67,9 @@ int main(int argc, char **argv)
     fo.close(); 
     fi.close(); 
   
+    double duration = ( clock() - time_start ) / (double) CLOCKS_PER_SEC;
+    cout<<"\nThis program took "<<duration<<" seconds to execute. Thank you for running.\n"<<endl;
+
     return 0;
 }
 
@@ -195,7 +202,7 @@ void countingSort(char S[][k], int j)
         //cout<<S[i]<<endl;
     }
 
-   /* for (int i = 0; i < 256; i++) {
+       /* for (int i = 0; i < 256; i++) {
         if (count[i] != 0) {
         cout<<"i =  "<<i<<" arr = "<<count[i]<<"    ";
          }
