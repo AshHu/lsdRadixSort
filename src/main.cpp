@@ -50,17 +50,17 @@ int main(int argc, char **argv)
 
     lsdRadixSort(S);
  
-   cout<<"\nThe array is \n";
+   /*cout<<"\nThe array is \n";
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < k; j++) {
 	    cout<<S[i][j];
 	}
 	cout<<endl;
-    }
+    }*/
 
  
-    //printToFile(S, fo, output);
-  //fo.close(); 
+    printToFile(S, fo, output);
+    fo.close(); 
     fi.close(); 
   
     return 0;
@@ -98,10 +98,10 @@ void printToFile(char S[][k], fstream& fo, string filename)
     }
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < k; j++) {
-	    cout<<S[i][j];
+	    //cout<<S[i][j];
 	    fo <<S[i][j];
 	}
-	cout<<endl;
+	//cout<<endl;
 	fo<<endl;
     }
  
@@ -119,6 +119,7 @@ void getString(char S[][k], vector<string> arr)
 		//cout<<S[i][j]<<" " ;
 	      }
 	}
+        //this is for padding
 	if (l < k) {
 	    for (int j = l ; j < k ; j++) {
 	        S[i][j] = '\0';
@@ -130,9 +131,13 @@ void getString(char S[][k], vector<string> arr)
         //strcpy(S[i], temp.c_str());
 	    //S[i][j] = temp[j];
 	//}
+    }/*
+
+    for (int i = 0; i < n; i++) {
+        string temp = arr[i].substr(0, k);
+        strcpy(S[i], temp.c_str());
     }
-
-
+ */
 }
 
 
@@ -142,16 +147,15 @@ void lsdRadixSort(char S[][k])
     int count[k];
     
     for (int d = k - 1; d >=0 ; d--) {
-    //for (int d = 0; d < k ; d++) {
-
 	countingSort(S, d);
-        //break;
     }
     
 }
 
 void countingSort(char S[][k], int j)
 {
+    //here j is the column 
+
     int count[256] = {0};
     //char temp[n];
 
@@ -163,7 +167,6 @@ void countingSort(char S[][k], int j)
 	int valueChar = (int) S[i][j];
 	//cout<<"Value char of "<<S[i][j]<<" is "<<valueChar<<endl;
 	count[valueChar + 1]++;
-	
     }
 
     for (int p = 1; p < 256; p++) {
@@ -173,13 +176,22 @@ void countingSort(char S[][k], int j)
     for (int i = 0; i < n; i++) {
         int valueChar = (int)S[i][j];
         //temp[count[valueChar++]++] = S[i][j];
-	strcpy(temp[count[valueChar++]++], S[i]);
+        int index = count[valueChar++]++;
+	//cout<<"index "<<index<<endl;
+	//strcpy(temp[index], S[i]);
+	for (int p = 0; p < k; p++) {
+	    temp[index][p] = S[i][p]; 
+	    //cout<<temp[index][p]<<endl;
+	}
     }
 
     for (int i = 0; i < n; i++) {
         //S[i][j] = temp[i]; 
 	//cout<<temp[i]<<endl;
-	strcpy(S[i], temp[i]);
+	//strcpy(S[i], temp[i]);
+	for (int p = 0; p < k; p++) {
+	    S[i][p] = temp[i][p];
+	}
         //cout<<S[i]<<endl;
     }
 
