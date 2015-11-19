@@ -4,7 +4,7 @@
 ## Usage
 ```bash
 # make 
-# make run input=input.txt
+# make run input=input.txt output=output.txt
 ```
 
 ## Author
