@@ -2,7 +2,10 @@
 % Class : CS 610-105
 % Name : Tushar Sharma, UCID : ts362
 
-# Instructions 
+
+\newpage 
+
+# Instructions on Running Program 
 
 Compile the program 
 
@@ -13,6 +16,12 @@ Run the program
 
 	$ make run input=f.txt output=g.txt 
 
+Here
+
+* f.txt is the input file 
+* g.txt is output file 
+
+
 Then choose whether to run lsd using pointers or swap 
 	
 	Please select technique for sorting: 
@@ -20,9 +29,9 @@ Then choose whether to run lsd using pointers or swap
 	2        Using Swapping
 
 
-# Analysis and Conclusion 
+# Analysis
 
-## Algorithms
+## Time Complexity
 
 LSD Radix Sort is linear time sorting algorithm. It is a stable sort. I have implemented lsd Radix sort using two different method.
 
@@ -32,10 +41,9 @@ LSD Radix Sort is linear time sorting algorithm. It is a stable sort. I have imp
 
 Both the algorithms of lsd Radix sort takes O(n) asymptotic time. 
 
+\newpage
 
-## Output 
-
-#### lsd Radix Sort Using pointers 
+## LSD Radix Sort Using pointers 
 
 n        k     time (s) 
 ----  -------  -------
@@ -53,8 +61,9 @@ n        k     time (s)
 
 ![Image of LSD Sort using Pointers](images/lsd1.png)
 
+\newpage 
 
-#### lsd Radix Sort Using Swapping
+## LSD Radix Sort Using Swapping
 
 n        k     time (s) 
 ----  -------  -------
@@ -71,6 +80,10 @@ n        k     time (s)
 5164    21     0.045842 
 
 ![Image of LSD Sort using Pointers](images/lsd2.png)
+
+\newpage 
+
+## Source Code 
 
 ```cpp
 
