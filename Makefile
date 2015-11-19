@@ -8,4 +8,4 @@ main:
 
 run:
 	./bin/main $(input)
-	
+

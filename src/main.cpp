@@ -5,17 +5,27 @@
 #include <cstdlib>
 using namespace std;
 
+/* Purpose : Implement Radix Sort using stable sort
+ *
+ * AUTHOR : Tushar Sharma <ts362.njit.edu>, <tushar.sharma1729.gmail.com>
+ */
 string input;
-const string output = "outs/output.txt";
+string output = "outs/g.txt";
 int n;
 const int k = 21;
 const int R = 256;
 
+
 void readFromFile(vector<string>&, fstream&, string); 
-void printToFile(char [][k], fstream&, string); 
+void printToFileNoSwap(char [][k], fstream&, string, int[]); 
 void getString(char [][k], vector<string>);
-void lsdRadixSort(char [][k]);
-void countingSort(char [][k], int );
+void lsdRadixSortNoSwap(char [][k], int []);
+void countingSortNoSwap(char [][k], int , int [], int []);
+
+void printToFileSwap(char [][k], fstream&, string);
+void lsdRadixSortSwap(char [][k]);
+void countingSortSwap(char [][k], int );
+
 
 int main(int argc, char **argv)
 {
@@ -37,33 +47,50 @@ int main(int argc, char **argv)
  
     readFromFile(arr, fi, input);
     n = arr.size(); 
-    
+
+    int indexP[n];
+    memset(indexP, 0, sizeof(int) * n);
+
     char S[n][k];
     S[0][0] = ' ';
-  
-
+ 
     getString(S, arr);
- 
-/*   cout<<"\nThe array is \n";
+    //inititlize indexP
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < k; j++) {
-	    cout<<S[i][j];
-	}
-	cout<<endl;
-    }*/
+        indexP[i] = i;
+    }
 
-    lsdRadixSort(S);
- 
-   /*cout<<"\nThe array is \n";
+    //print those values of indexP
+    #ifdef DEBUG
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < k; j++) {
-	    cout<<S[i][j];
-	}
-	cout<<endl;
-    }*/
-
+        cout<<indexP[i]<<" " ;
+    }
+    cout<<endl;
+    #endif 
  
-    printToFile(S, fo, output);
+    int choice;
+    cout<<"\nPlease select technique for sorting: \n1 \t Using pointer array  \n2 \t Using Swapping\n";
+    cin>>choice;
+    if ( choice == 1) { 
+        lsdRadixSortNoSwap(S, indexP);
+
+        #ifdef DEBUG
+        //print those values of indexP
+        for (int i = 0; i < n; i++) {
+            cout<<indexP[i]<<" " ;
+        }
+        cout<<endl;
+        #endif 
+ 
+        printToFileNoSwap(S, fo, output, indexP);
+    }
+
+    else {
+         lsdRadixSortSwap(S);
+
+	 printToFileSwap(S, fo, output);
+    }
+
     fo.close(); 
     fi.close(); 
   
@@ -96,8 +123,12 @@ void readFromFile(vector<string>& arr, fstream& fp, string filename)
 }
 
 
-void printToFile(char S[][k], fstream& fo, string filename)
+void printToFileNoSwap(char S[][k], fstream& fo, string filename, int indexP[])
 {
+    int tempP[n]; 
+    memset(tempP, 0, sizeof(int) * n); 
+
+
     fo.open(filename.c_str(), ios::out | ios::binary);
     if (!fo) {
         cout<<"Error opening the file\n";
@@ -106,7 +137,7 @@ void printToFile(char S[][k], fstream& fo, string filename)
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < k; j++) {
 	    //cout<<S[i][j];
-	    fo <<S[i][j];
+	    fo <<S[indexP[i]][j];
 	}
 	//cout<<endl;
 	fo<<endl;
@@ -132,34 +163,96 @@ void getString(char S[][k], vector<string> arr)
 	        S[i][j] = '\0';
 	    }
 	}
-	//cout<<endl;
-	//cout<<temp<<endl;
-	//for (int j = 0; j < temp.size(); j++) {
-        //strcpy(S[i], temp.c_str());
-	    //S[i][j] = temp[j];
-	//}
-    }/*
-
-    for (int i = 0; i < n; i++) {
-        string temp = arr[i].substr(0, k);
-        strcpy(S[i], temp.c_str());
     }
- */
 }
 
 
 
-void lsdRadixSort(char S[][k])
+void lsdRadixSortNoSwap(char S[][k], int indexP[])
 {
     int count[k];
-    
+    int prevIndex[n]; 
+  
+   for (int d = 0; d < n ; d++ ) 
+        prevIndex[d] = d; 
+
     for (int d = k - 1; d >=0 ; d--) {
-	countingSort(S, d);
+	countingSortNoSwap(S, d, indexP, prevIndex);
     }
     
 }
 
-void countingSort(char S[][k], int j)
+void countingSortNoSwap(char S[][k], int j, int indexP[], int prevIndex[])
+{
+    //here j is the column 
+
+    int count[256] = {0};
+
+    char temp[n][k];
+    temp[0][0] = ' ';
+    int tempCount[n];
+    memset(tempCount, 0, sizeof(int) * n);
+ 
+    for (int i = 0; i < n; i++) {
+	int valueChar = (int) S[prevIndex[i]][j];
+	#ifdef DEBUG 
+	cout<<"Value char of "<<S[prevIndex[i]][j]<<" is "<<valueChar<<endl;
+	#endif 
+	count[valueChar + 1]++;
+    }
+
+    for (int p = 1; p < 256; p++) {
+        count[p] += count[p - 1];
+    }
+ 
+    for (int i = 0; i < n; i++) {
+        int valueChar = (int)S[prevIndex[i]][j];
+        int index = count[valueChar++]++;
+
+	tempCount[index] =   prevIndex[i];
+	#ifdef DEBUG
+	cout<<"print valuechar "<<S[prevIndex[i]][j]<<"  index "<<index<<" of "<<tempCount[index]<<endl;
+	#endif 
+    }
+
+    for (int i = 0; i < n; i++) {
+        indexP[i] = tempCount[i];
+	prevIndex[i] = tempCount[i];
+	#ifdef DEBUG
+	cout<<tempCount[i]<<" values "<<endl;
+	#endif
+    }
+}
+
+void printToFileSwap(char S[][k], fstream& fo, string filename)
+{
+    fo.open(filename.c_str(), ios::out | ios::binary);
+    if (!fo) {
+        cout<<"Error opening the file\n";
+        exit(-1);
+    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < k; j++) {
+            //cout<<S[i][j];
+            fo <<S[i][j];
+        }
+        //cout<<endl;
+        fo<<endl;
+    }
+
+}
+
+void lsdRadixSortSwap(char S[][k])
+{
+    int count[k];
+
+    for (int d = k - 1; d >=0 ; d--) {
+        countingSortSwap(S, d);
+    }
+
+}
+
+void countingSortSwap(char S[][k], int j)
 {
     //here j is the column 
 
@@ -171,36 +264,36 @@ void countingSort(char S[][k], int j)
 
 
     for (int i = 0; i < n; i++) {
-	int valueChar = (int) S[i][j];
-	//cout<<"Value char of "<<S[i][j]<<" is "<<valueChar<<endl;
-	count[valueChar + 1]++;
+        int valueChar = (int) S[i][j];
+        //cout<<"Value char of "<<S[i][j]<<" is "<<valueChar<<endl;
+        count[valueChar + 1]++;
     }
 
     for (int p = 1; p < 256; p++) {
         count[p] += count[p - 1];
     }
- 
+
     for (int i = 0; i < n; i++) {
         int valueChar = (int)S[i][j];
         //temp[count[valueChar++]++] = S[i][j];
         int index = count[valueChar++]++;
-	//cout<<"index "<<index<<endl;
-	//strcpy(temp[index], S[i]);
-	for (int p = 0; p < k; p++) {
-	    temp[index][p] = S[i][p]; 
-	    //cout<<temp[index][p]<<endl;
-	}
+        //cout<<"index "<<index<<endl;
+        //strcpy(temp[index], S[i]);
+        for (int p = 0; p < k; p++) {
+            temp[index][p] = S[i][p];
+            //cout<<temp[index][p]<<endl;
+        }
     }
 
     for (int i = 0; i < n; i++) {
         //S[i][j] = temp[i]; 
-	//cout<<temp[i]<<endl;
-	//strcpy(S[i], temp[i]);
-	for (int p = 0; p < k; p++) {
-	    S[i][p] = temp[i][p];
-	}
+        //cout<<temp[i]<<endl;
+        //strcpy(S[i], temp[i]);
+        for (int p = 0; p < k; p++) {
+            S[i][p] = temp[i][p];
+        }
         //cout<<S[i]<<endl;
-    }
+    } 
 
        /* for (int i = 0; i < 256; i++) {
         if (count[i] != 0) {
@@ -208,5 +301,5 @@ void countingSort(char S[][k], int j)
          }
     }
     cout<<endl;*/
-	
+
 }
