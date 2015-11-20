@@ -9,7 +9,7 @@
 
 Extract the file by
 
-	$ mkdir -p program3 && tar -xvf program.tar.gz -C program3
+	$ mkdir -p program3 && tar -xvf program3.tar.gz -C program3
 
 Compile the program 
 
