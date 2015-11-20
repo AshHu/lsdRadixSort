@@ -7,6 +7,10 @@
 
 # Instructions on Running Program 
 
+Extract the file by
+
+	$ mkdir -p program3 && tar -xvf program.tar.gz -C program3
+
 Compile the program 
 
 	$ make
