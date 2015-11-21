@@ -1,6 +1,6 @@
 % Quickly sort large file in linear time 
-% LSD Radix Sort Algorithm
-% Name : Tushar Sharma
+% LSD Radix Sort Algorithm Implementation
+% Author : Tushar Sharma <tushar.sharma1729@gmail.com>
 
 
 \newpage 
