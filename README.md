@@ -7,6 +7,10 @@
 # make run input=input.txt output=output.txt
 ```
 
+## Instructions 
+
+Please see `About.pdf` for instructions. 
+
 ## Author
 
 Tushar Sharma `tushar.sharma1729@gmail.com`
