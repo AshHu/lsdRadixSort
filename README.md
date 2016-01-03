@@ -38,7 +38,6 @@ LSD Radix Sort is linear time sorting algorithm. It is a stable sort. I have imp
 
 Both the algorithms of lsd Radix sort takes O(n) asymptotic time. 
 
-\newpage
 
 ## LSD Radix Sort Using pointers 
 
@@ -58,7 +57,6 @@ n        k     time (s)
 
 ![Image of LSD Sort using Pointers](images/lsd1.png)
 
-\newpage 
 
 ## LSD Radix Sort Using Swapping
 
