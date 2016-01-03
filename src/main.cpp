@@ -294,14 +294,5 @@ void countingSortSwap(char S[][k], int j)
         for (int p = 0; p < k; p++) {
             S[i][p] = temp[i][p];
         }
-        //cout<<S[i]<<endl;
     } 
-
-       /* for (int i = 0; i < 256; i++) {
-        if (count[i] != 0) {
-        cout<<"i =  "<<i<<" arr = "<<count[i]<<"    ";
-         }
-    }
-    cout<<endl;*/
-
 }
