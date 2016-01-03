@@ -41,38 +41,10 @@ Both the algorithms of lsd Radix sort takes O(n) asymptotic time.
 
 ## LSD Radix Sort Using pointers 
 
-n        k     time (s) 
-----  -------  -------
-8       21     0.000591
-16      21     0.000674
-32      21     0.000762
-64      21     0.000961 
-128     21     0.001582
-256     21     0.002517
-512     21     0.004514 
-1024    21     0.008236 
-2048    21     0.013947
-4096    21     0.0263 
-5164    21     0.033631
-
 ![Image of LSD Sort using Pointers](images/lsd1.png)
 
 
 ## LSD Radix Sort Using Swapping
-
-n        k     time (s) 
-----  -------  -------
-8       21     0.000773 
-16      21     0.000715
-32      21     0.000798
-64      21     0.001096  
-128     21     0.001924
-256     21     0.003028
-512     21     0.005486
-1024    21     0.010274
-2048    21     0.018737
-4096    21     0.038562
-5164    21     0.045842 
 
 ![Image of LSD Sort using Pointers](images/lsd2.png)
 
